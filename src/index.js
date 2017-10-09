@@ -7,7 +7,7 @@ const defaultConfig = {
 
 export function persistStore (store, config = defaultConfig) {
   const { list, prefix } = config;
-  let prevState = null;
+  let prevState = getInitialState(config);
   store.subscribe(() => {
     const state = store.getState();
 
@@ -18,7 +18,7 @@ export function persistStore (store, config = defaultConfig) {
     list.forEach(p => {
       let currentValue = _.get(state, p.path);
       const prevValue = _.get(prevState, p.path);
-      if (currentValue !== prevValue) {
+      if (!_.isEqual(currentValue, prevValue)) {
         if (currentValue instanceof Array) {
           currentValue = JSON.stringify(currentValue);
         }
