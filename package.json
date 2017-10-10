@@ -16,6 +16,11 @@
   },
   "author": "Antony Budianto <antonybudianto@gmail.com>",
   "license": "MIT",
+  "jest": {
+    "setupFiles": [
+      "./__mocks__/localStorage.js"
+    ]
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

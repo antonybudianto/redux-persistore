@@ -5,15 +5,18 @@ const defaultConfig = {
   prefix: ''
 };
 
+function generatePath (prefix, path) {
+  if (prefix) {
+    return [prefix, ...path.split('.')].join('-');
+  }
+  return path.split('.').join('-');
+}
+
 export function persistStore (store, config = defaultConfig) {
   const { list, prefix } = config;
   let prevState = getInitialState(config);
   store.subscribe(() => {
     const state = store.getState();
-
-    if (prevState === state) {
-      return;
-    }
 
     list.forEach(p => {
       let currentValue = _.get(state, p.path);
@@ -22,7 +25,7 @@ export function persistStore (store, config = defaultConfig) {
         if (currentValue instanceof Array) {
           currentValue = JSON.stringify(currentValue);
         }
-        let path = [prefix, ...p.path.split('.')].join('-');
+        let path = generatePath(prefix, p.path);
         localStorage.setItem(path, currentValue);
       }
     });
@@ -35,7 +38,7 @@ export function getInitialState (config = defaultConfig) {
   const { list, prefix } = config;
   const initialState = {};
   list.forEach(p => {
-    const path = [prefix, ...p.path.split('.')].join('-');
+    const path = generatePath(prefix, p.path);
     let data = localStorage.getItem(path);
     if (data) {
       if (p.isArray) {
