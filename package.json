@@ -12,6 +12,7 @@
   "scripts": {
     "build": "babel src -d lib --ignore spec.js",
     "lint": "eslint src",
+    "lint:fix": "eslint src __mocks__ --fix",
     "test": "jest"
   },
   "author": "Antony Budianto <antonybudianto@gmail.com>",
